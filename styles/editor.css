@@ -1,0 +1,112 @@
+.editor-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-dark);
+    z-index: 1000;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.editor-title {
+    color: var(--neon-primary);
+    font-size: 1.5rem;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    width: 50%;
+    transition: all 0.3s ease;
+}
+
+.editor-title:focus {
+    outline: none;
+    border-bottom-color: var(--neon-primary);
+}
+
+.editor-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.editor-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    color: var(--text-light);
+    padding: 0.8rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.editor-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: var(--neon-primary);
+    box-shadow: 0 0 10px var(--neon-primary);
+}
+
+.editor-btn.save-btn {
+    background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary));
+    border: none;
+}
+
+.editor-btn.save-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.editor-content {
+    flex: 1;
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.editor-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.editor-preview {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow-y: auto;
+}
+
+.editor-preview-title {
+    color: var(--neon-primary);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* EasyMDE 自定义样式 */
+.EasyMDEContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}

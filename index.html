@@ -227,48 +227,56 @@
             font-size: 0.9rem;
         }
 
-        /* 编辑器样式 */
-        .editor-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--bg-dark);
-            z-index: 1000;
-            padding: 2rem;
+        /* 引入外部样式文件 */
+        @import url('./styles/editor.css');
+        @import url('./styles/docs.css');
+
+        /* EasyMDE 自定义样式 */
+        .EasyMDEContainer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
 
-        .editor-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .EasyMDEContainer .CodeMirror {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        .EasyMDEContainer .CodeMirror-cursor {
+            border-color: var(--neon-primary);
+        }
+
+        .EasyMDEContainer .editor-toolbar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem;
             margin-bottom: 1rem;
         }
 
-        .editor-title {
-            color: var(--neon-primary);
-            font-size: 1.5rem;
-        }
-
-        .editor-actions {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .editor-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+        .EasyMDEContainer .editor-toolbar button {
             color: var(--text-light);
-            padding: 0.5rem 1rem;
-            cursor: pointer;
+            border: none;
+            border-radius: 5px;
             transition: all 0.3s ease;
         }
 
-        .editor-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+        .EasyMDEContainer .editor-toolbar button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neon-primary);
+        }
+
+        .EasyMDEContainer .editor-toolbar i.separator {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .EasyMDEContainer .editor-preview {
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text-light);
         }
 
         @keyframes glow {
@@ -379,107 +387,36 @@
         <div class="editor-header">
             <input type="text" id="doc-title" placeholder="文档标题" class="editor-title">
             <div class="editor-actions">
-                <button class="editor-btn" onclick="saveDocument()">保存</button>
-                <button class="editor-btn" onclick="closeEditor()">关闭</button>
+                <button class="editor-btn save-btn" onclick="saveDocument()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                        <polyline points="7 3 7 8 15 8"></polyline>
+                    </svg>
+                    保存
+                </button>
+                <button class="editor-btn" onclick="closeEditor()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                    关闭
+                </button>
             </div>
         </div>
-        <textarea id="editor"></textarea>
+        <div class="editor-content">
+            <div class="editor-main">
+                <textarea id="editor"></textarea>
+            </div>
+            <div class="editor-preview">
+                <h3 class="editor-preview-title">实时预览</h3>
+                <div id="preview-content"></div>
+            </div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
-    <script>
-        // 初始化编辑器
-        const editor = new EasyMDE({
-            element: document.getElementById('editor'),
-            autofocus: true,
-            spellChecker: false,
-            status: false,
-            placeholder: '在这里开始写作...',
-        });
-
-        // 打开编辑器
-        function openEditor() {
-            document.getElementById('editor-container').style.display = 'block';
-            editor.value('');
-            document.getElementById('doc-title').value = '';
-        }
-
-        // 关闭编辑器
-        function closeEditor() {
-            document.getElementById('editor-container').style.display = 'none';
-        }
-
-        // 保存文档
-        function saveDocument() {
-            const title = document.getElementById('doc-title').value;
-            const content = editor.value();
-            
-            if (!title || !content) {
-                alert('请填写标题和内容');
-                return;
-            }
-
-            // 创建新的文档卡片
-            const docCard = document.createElement('div');
-            docCard.className = 'doc-card';
-            docCard.innerHTML = `
-                <h3>${title}</h3>
-                <p>${new Date().toLocaleDateString()}</p>
-            `;
-
-            // 添加点击事件以编辑文档
-            docCard.onclick = () => {
-                openEditor();
-                document.getElementById('doc-title').value = title;
-                editor.value(content);
-            };
-
-            // 添加到文档列表
-            document.getElementById('docs-list').appendChild(docCard);
-            
-            // 关闭编辑器
-            closeEditor();
-        }
-    </script>
-    <script>
-        // 处理平滑滚动和导航高亮
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                e.preventDefault();
-                const targetId = tab.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                const navHeight = parseInt(getComputedStyle(document.documentElement)
-                    .getPropertyValue('--nav-height'));
-
-                window.scrollTo({
-                    top: targetElement.offsetTop - navHeight,
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // 监听滚动事件以更新活动标签
-        window.addEventListener('scroll', () => {
-            const sections = document.querySelectorAll('section, header');
-            const navHeight = parseInt(getComputedStyle(document.documentElement)
-                .getPropertyValue('--nav-height'));
-
-            let currentSection = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - navHeight - 100;
-                const sectionBottom = sectionTop + section.offsetHeight;
-                if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
-                    currentSection = '#' + section.id;
-                }
-            });
-
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
-                if (tab.getAttribute('href') === currentSection) {
-                    tab.classList.add('active');
-                }
-            });
-        });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="./js/docs.js"></script>
 </body>
 </html>

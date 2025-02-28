@@ -1,0 +1,46 @@
+:root {
+    --nav-height: 60px;
+    --neon-primary: #0ff;
+    --neon-secondary: #f0f;
+    --bg-dark: #0a0a0a;
+    --text-light: #ffffff;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* 动画效果 */
+@keyframes glow {
+    from {
+        text-shadow: 0 0 10px var(--neon-primary),
+                     0 0 20px var(--neon-primary),
+                     0 0 30px var(--neon-primary);
+    }
+    to {
+        text-shadow: 0 0 20px var(--neon-secondary),
+                     0 0 30px var(--neon-secondary),
+                     0 0 40px var(--neon-secondary);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+}
