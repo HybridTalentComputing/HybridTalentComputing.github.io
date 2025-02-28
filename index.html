@@ -295,25 +295,33 @@
     <nav class="nav-container">
         <div class="container">
             <div class="nav-tabs">
-                <a href="#home" class="nav-tab active">主页</a>
+                <a href="#docs" class="nav-tab active">文档中心</a>
                 <a href="#skills" class="nav-tab">技术栈</a>
                 <a href="#projects" class="nav-tab">项目展示</a>
-                <a href="#docs" class="nav-tab">文档中心</a>
             </div>
         </div>
     </nav>
 
-    <header id="home">
-        <div class="container">
-            <div class="hero">
-                <h1>Hybrid Talent Computing</h1>
-                <p>探索技术的无限可能，创造数字化的未来</p>
-            </div>
-        </div>
-    </header>
-
     <main>
-        <section class="section" id="skills">
+        <section class="section" id="docs">
+            <div class="container">
+                <div class="hero">
+                    <h1>Hybrid Talent Computing</h1>
+                    <p>探索技术的无限可能，创造数字化的未来</p>
+                </div>
+                <div class="docs-section">
+                    <div class="docs-header">
+                        <h2 class="section-title">文档中心</h2>
+                        <button class="new-doc-btn" onclick="openEditor()">创建新文档</button>
+                    </div>
+                    <div class="docs-grid" id="docs-list">
+                        <!-- 文档列表将通过 JavaScript 动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="skills" style="display: none;">
             <div class="container">
                 <h2 class="section-title">技术栈</h2>
                 <div class="skills-grid">
@@ -337,7 +345,7 @@
             </div>
         </section>
 
-        <section class="section" id="projects">
+        <section class="section" id="projects" style="display: none;">
             <div class="container">
                 <h2 class="section-title">项目展示</h2>
                 <div class="projects-grid">
@@ -363,19 +371,7 @@
             </div>
         </section>
 
-        <section class="section" id="docs">
-            <div class="container">
-                <div class="docs-section">
-                    <div class="docs-header">
-                        <h2 class="section-title">文档中心</h2>
-                        <button class="new-doc-btn" onclick="openEditor()">创建新文档</button>
-                    </div>
-                    <div class="docs-grid" id="docs-list">
-                        <!-- 文档列表将通过 JavaScript 动态生成 -->
-                    </div>
-                </div>
-            </div>
-        </section>
+
     </main>
 
     <!-- 编辑器容器 -->
