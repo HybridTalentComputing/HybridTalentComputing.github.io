@@ -61,7 +61,7 @@ function renderDocsList() {
     const sortedDocs = [...docs].sort((a, b) => a.title.localeCompare(b.title));
 
     docsContainer.innerHTML = sortedDocs.map(doc => `
-        <div class="doc-card ${currentDocId === doc.id ? 'active' : ''}" onclick="showDocument('${doc.id}')">
+        <div class="doc-card" onclick="window.location.href='doc.html?id=${doc.id}'">
             <h3>${doc.title}</h3>
             <p class="doc-preview">${doc.content.substring(doc.content.indexOf('\n'), doc.content.indexOf('\n') + 150).trim()}...</p>
         </div>

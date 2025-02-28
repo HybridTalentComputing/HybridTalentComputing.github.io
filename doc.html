@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文档查看 - Hybrid Talent Computing</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/docs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css">
+    <style>
+        .doc-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+        }
+        
+        .doc-title {
+            color: #7fffd4;
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(127, 255, 212, 0.5);
+        }
+        
+        .doc-content {
+            color: #fff;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .doc-content h1, .doc-content h2, .doc-content h3 {
+            color: #7fffd4;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .doc-content code {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 0.2em 0.4em;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .doc-content pre {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        
+        .back-button {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            padding: 0.5rem 1rem;
+            background: rgba(127, 255, 212, 0.2);
+            color: #7fffd4;
+            border: 1px solid #7fffd4;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+        
+        .back-button:hover {
+            background: rgba(127, 255, 212, 0.3);
+            box-shadow: 0 0 10px rgba(127, 255, 212, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <a href="index.html" class="back-button">返回首页</a>
+    <div class="doc-container">
+        <h1 class="doc-title" id="doc-title"></h1>
+        <div class="doc-content" id="doc-content"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.2/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+    <script>
+        async function loadDocument() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const docId = urlParams.get('id');
+            
+            if (!docId) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/docs/${docId}.md`);
+                const content = await response.text();
+                
+                const title = content.split('\n')[0].replace('#', '').trim();
+                document.getElementById('doc-title').textContent = title;
+                
+                const markedOptions = {
+                    gfm: true,
+                    breaks: true,
+                    highlight: function(code, lang) {
+                        if (Prism && lang) {
+                            try {
+                                return Prism.highlight(code, Prism.languages[lang], lang);
+                            } catch (e) {
+                                return code;
+                            }
+                        }
+                        return code;
+                    }
+                };
+                
+                marked.setOptions(markedOptions);
+                document.getElementById('doc-content').innerHTML = marked.parse(content);
+            } catch (error) {
+                console.error('加载文档失败:', error);
+                document.getElementById('doc-title').textContent = '文档加载失败';
+                document.getElementById('doc-content').innerHTML = '<p>抱歉，无法加载所请求的文档。</p>';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadDocument);
+    </script>
+</body>
+</html>
