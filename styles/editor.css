@@ -5,11 +5,18 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: var(--bg-dark);
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(15px);
     z-index: 1000;
     padding: 2rem;
     display: flex;
     flex-direction: column;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .editor-header {
@@ -17,26 +24,28 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    padding: 1rem;
+    padding: 1.5rem;
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
+    border-radius: 15px;
     border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .editor-title {
     color: var(--neon-primary);
     font-size: 1.5rem;
-    background: transparent;
+    background: rgba(255, 255, 255, 0.02);
     border: none;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding: 0.5rem;
+    border-radius: 10px;
+    padding: 0.8rem 1.2rem;
     width: 50%;
     transition: all 0.3s ease;
 }
 
 .editor-title:focus {
     outline: none;
-    border-bottom-color: var(--neon-primary);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 15px var(--neon-primary);
 }
 
 .editor-actions {
@@ -79,21 +88,27 @@
     display: flex;
     gap: 2rem;
     margin-top: 1rem;
+    height: calc(100vh - 200px);
 }
 
 .editor-main {
     flex: 1;
     display: flex;
     flex-direction: column;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 15px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .editor-preview {
     flex: 1;
     background: rgba(255, 255, 255, 0.02);
-    border-radius: 10px;
+    border-radius: 15px;
     padding: 1.5rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
     overflow-y: auto;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .editor-preview-title {
