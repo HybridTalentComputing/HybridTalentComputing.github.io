@@ -96,6 +96,9 @@ function showDocument(docId) {
         // 更新文档列表中的激活状态
         renderDocsList();
 
+        // 确保预览区域可见并有适当的样式
+        contentElement.classList.add('active');
+        
         // 滚动到文档内容区域
         contentElement.scrollIntoView({ behavior: 'smooth' });
     }
