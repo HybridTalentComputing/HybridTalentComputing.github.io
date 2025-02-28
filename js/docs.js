@@ -1,6 +1,26 @@
 let editor;
 let currentDocId = null;
-const docs = JSON.parse(localStorage.getItem('docs') || '[]');
+const docs = [
+    {
+        id: 'example',
+        title: 'Markdown 语法示例',
+        content: '',
+        createdAt: Date.now(),
+        updatedAt: Date.now()
+    }
+];
+
+// 加载markdown文件内容
+async function loadMarkdownContent() {
+    try {
+        const response = await fetch('/docs/example.md');
+        const content = await response.text();
+        docs[0].content = content;
+        renderDocsList();
+    } catch (error) {
+        console.error('加载Markdown文件失败:', error);
+    }
+}
 
 // 初始化编辑器
 function initEditor() {
@@ -79,43 +99,7 @@ function openDoc(docId) {
     }
 }
 
-// 保存文档
-function saveDocument() {
-    const title = document.getElementById('doc-title').value.trim();
-    const content = editor.value().trim();
 
-    if (!title || !content) {
-        showNotification('标题和内容不能为空！', 'error');
-        return;
-    }
-
-    if (currentDocId) {
-        // 更新现有文档
-        const docIndex = docs.findIndex(d => d.id === currentDocId);
-        if (docIndex !== -1) {
-            docs[docIndex] = {
-                ...docs[docIndex],
-                title,
-                content,
-                updatedAt: Date.now()
-            };
-        }
-    } else {
-        // 创建新文档
-        docs.push({
-            id: Date.now().toString(),
-            title,
-            content,
-            createdAt: Date.now(),
-            updatedAt: Date.now()
-        });
-    }
-
-    localStorage.setItem('docs', JSON.stringify(docs));
-    renderDocsList();
-    closeEditor();
-    showNotification('文档保存成功！', 'success');
-}
 
 // 关闭编辑器
 function closeEditor() {
@@ -141,4 +125,7 @@ function showNotification(message, type = 'info') {
 }
 
 // 初始化
-document.addEventListener('DOMContentLoaded', initEditor);
+document.addEventListener('DOMContentLoaded', () => {
+    initEditor();
+    loadMarkdownContent();
+});
