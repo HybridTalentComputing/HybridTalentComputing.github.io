@@ -38,16 +38,19 @@ function renderDocsList() {
     if (docs.length === 0) {
         docsContainer.innerHTML = `
             <div class="empty-docs">
-                <p>暂无文档</p>
+                <p>暂无文档，请将Markdown文件放置在docs目录下</p>
             </div>
         `;
         return;
     }
 
-    docsContainer.innerHTML = docs.map(doc => `
+    // 按文档标题排序
+    const sortedDocs = [...docs].sort((a, b) => a.title.localeCompare(b.title));
+
+    docsContainer.innerHTML = sortedDocs.map(doc => `
         <div class="doc-card" onclick="showDocument('${doc.id}')">
             <h3>${doc.title}</h3>
-            <p class="doc-preview">${doc.content.substring(0, 100)}${doc.content.length > 100 ? '...' : ''}</p>
+            <p class="doc-preview">${doc.content.substring(doc.content.indexOf('\n'), doc.content.indexOf('\n') + 150).trim()}...</p>
         </div>
     `).join('');
 }
@@ -58,8 +61,20 @@ function showDocument(docId) {
     if (doc) {
         currentDocId = docId;
         const contentElement = document.getElementById('preview-content');
+        // 使用marked.js渲染Markdown内容
         contentElement.innerHTML = marked.parse(doc.content);
         contentElement.style.display = 'block';
+        
+        // 高亮当前选中的文档卡片
+        document.querySelectorAll('.doc-card').forEach(card => {
+            card.classList.remove('active');
+            if (card.onclick.toString().includes(docId)) {
+                card.classList.add('active');
+            }
+        });
+
+        // 滚动到文档内容区域
+        contentElement.scrollIntoView({ behavior: 'smooth' });
     }
 }
 

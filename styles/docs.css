@@ -29,16 +29,19 @@
     overflow: hidden;
 }
 
-.doc-card:hover {
+.doc-card:hover,
+.doc-card.active {
     transform: translateY(-3px);
     border-color: var(--neon-primary);
     box-shadow: 0 4px 20px rgba(0, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
 }
 
 .doc-card h3 {
     color: var(--neon-primary);
     margin-bottom: 1rem;
     font-size: 1.3rem;
+    text-shadow: 0 0 5px var(--neon-primary);
 }
 
 .doc-preview {
@@ -46,6 +49,7 @@
     opacity: 0.8;
     margin-bottom: 1rem;
     line-height: 1.6;
+    font-size: 0.95rem;
 }
 
 #preview-content {
@@ -54,6 +58,12 @@
     padding: 2rem;
     margin-top: 2rem;
     line-height: 1.8;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 #preview-content h1,
@@ -64,10 +74,12 @@
 #preview-content h6 {
     color: var(--neon-primary);
     margin: 1.5rem 0 1rem;
+    text-shadow: 0 0 5px var(--neon-primary);
 }
 
 #preview-content p {
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 #preview-content code {
@@ -75,44 +87,83 @@
     padding: 0.2rem 0.4rem;
     border-radius: 4px;
     font-family: 'Consolas', monospace;
+    color: var(--neon-primary);
 }
 
 #preview-content pre {
     background: rgba(0, 0, 0, 0.3);
-    padding: 1rem;
+    padding: 1.2rem;
     border-radius: 8px;
     overflow-x: auto;
-    margin: 1rem 0;
+    margin: 1.2rem 0;
+    border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+#preview-content pre code {
+    background: none;
+    padding: 0;
+    color: var(--text-light);
 }
 
 #preview-content blockquote {
     border-left: 4px solid var(--neon-primary);
-    padding-left: 1rem;
-    margin: 1rem 0;
-    color: rgba(255, 255, 255, 0.7);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 0 8px 8px 0;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 #preview-content img {
     max-width: 100%;
     border-radius: 8px;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 #preview-content table {
     width: 100%;
     border-collapse: collapse;
-    margin: 1rem 0;
+    margin: 1.5rem 0;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
 }
 
 #preview-content th,
 #preview-content td {
+    padding: 0.8rem 1rem;
     border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 0.5rem;
     text-align: left;
 }
 
 #preview-content th {
     background: rgba(255, 255, 255, 0.05);
+    color: var(--neon-primary);
+}
+
+#preview-content ul,
+#preview-content ol {
+    margin: 1rem 0 1rem 1.5rem;
+}
+
+#preview-content li {
+    margin-bottom: 0.5rem;
+}
+
+#preview-content hr {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon-primary), transparent);
+    margin: 2rem 0;
+}
+
+.empty-docs {
+    text-align: center;
+    padding: 3rem;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 15px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
 }
 .doc-meta {
     display: flex;
