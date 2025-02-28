@@ -4,25 +4,45 @@ const docs = [];
 // 从docs目录加载所有markdown文件
 async function loadAllMarkdownFiles() {
     try {
-        const response = await fetch('/docs/example.md');
-        const content = await response.text();
+        const response = await fetch('/docs/index.json');
+        const fileList = await response.json();
         
-        const title = content.split('\n')[0].replace('#', '').trim();
-        docs.push({
-            id: 'example',
-            title: title,
-            content: content
-        });
-        renderDocsList();
+        for (const file of fileList) {
+            const fileResponse = await fetch(`/docs/${file}`);
+            const content = await fileResponse.text();
+            
+            const title = content.split('\n')[0].replace('#', '').trim();
+            const id = file.replace('.md', '');
+            
+            docs.push({
+                id: id,
+                title: title,
+                content: content
+            });
+        }
     } catch (error) {
         console.error('加载Markdown文件失败:', error);
+        // 如果加载失败，至少加载示例文档
+        try {
+            const response = await fetch('/docs/example.md');
+            const content = await response.text();
+            
+            const title = content.split('\n')[0].replace('#', '').trim();
+            docs.push({
+                id: 'example',
+                title: title,
+                content: content
+            });
+        } catch (fallbackError) {
+            console.error('加载示例文档也失败:', fallbackError);
+        }
     }
+    renderDocsList();
 }
 
 // 初始化文档系统
 async function initDocs() {
     await loadAllMarkdownFiles();
-    renderDocsList();
 }
 
 // 渲染文档列表
@@ -31,7 +51,7 @@ function renderDocsList() {
     if (!docs || docs.length === 0) {
         docsContainer.innerHTML = `
             <div class="empty-docs">
-                <p>正在加载文档...</p>
+                <p>暂无可用文档</p>
             </div>
         `;
         return;
@@ -41,11 +61,7 @@ function renderDocsList() {
     const sortedDocs = [...docs].sort((a, b) => a.title.localeCompare(b.title));
 
     docsContainer.innerHTML = sortedDocs.map(doc => `
-    // 按文档标题排序
-    const sortedDocs = [...docs].sort((a, b) => a.title.localeCompare(b.title));
-
-    docsContainer.innerHTML = sortedDocs.map(doc => `
-        <div class="doc-card" onclick="showDocument('${doc.id}')">
+        <div class="doc-card ${currentDocId === doc.id ? 'active' : ''}" onclick="showDocument('${doc.id}')">
             <h3>${doc.title}</h3>
             <p class="doc-preview">${doc.content.substring(doc.content.indexOf('\n'), doc.content.indexOf('\n') + 150).trim()}...</p>
         </div>
@@ -77,13 +93,8 @@ function showDocument(docId) {
         contentElement.innerHTML = marked.parse(doc.content);
         contentElement.style.display = 'block';
         
-        // 高亮当前选中的文档卡片
-        document.querySelectorAll('.doc-card').forEach(card => {
-            card.classList.remove('active');
-            if (card.onclick.toString().includes(docId)) {
-                card.classList.add('active');
-            }
-        });
+        // 更新文档列表中的激活状态
+        renderDocsList();
 
         // 滚动到文档内容区域
         contentElement.scrollIntoView({ behavior: 'smooth' });
