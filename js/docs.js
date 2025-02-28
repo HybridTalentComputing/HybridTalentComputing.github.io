@@ -27,6 +27,15 @@ function initEditor() {
 // 渲染文档列表
 function renderDocsList() {
     const docsContainer = document.getElementById('docs-list');
+    if (docs.length === 0) {
+        docsContainer.innerHTML = `
+            <div class="empty-docs">
+                <p>暂无文档，点击"创建新文档"按钮开始创建</p>
+            </div>
+        `;
+        return;
+    }
+
     docsContainer.innerHTML = docs.map(doc => `
         <div class="doc-card" onclick="openDoc('${doc.id}')">
             <h3>${doc.title}</h3>
@@ -46,6 +55,7 @@ function renderDocsList() {
             </div>
         </div>
     `).join('');
+
 }
 
 // 创建新文档

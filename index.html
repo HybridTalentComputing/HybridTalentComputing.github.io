@@ -384,35 +384,67 @@
 
     <!-- 编辑器容器 -->
     <div class="editor-container" id="editor-container">
-        <div class="editor-header">
-            <input type="text" id="doc-title" placeholder="文档标题" class="editor-title">
-            <div class="editor-actions">
-                <button class="editor-btn save-btn" onclick="saveDocument()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-                        <polyline points="17 21 17 13 7 13 7 21"></polyline>
-                        <polyline points="7 3 7 8 15 8"></polyline>
-                    </svg>
-                    保存
-                </button>
-                <button class="editor-btn" onclick="closeEditor()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                    </svg>
-                    关闭
-                </button>
-            </div>
-        </div>
-        <div class="editor-content">
-            <div class="editor-main">
-                <textarea id="editor"></textarea>
-            </div>
-            <div class="editor-preview">
-                <h3 class="editor-preview-title">实时预览</h3>
-                <div id="preview-content"></div>
-            </div>
-        </div>
+        <div class="editor-container" {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            padding: 2rem;
+            flex-direction: column;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .editor-content {
+            flex: 1;
+            display: flex;
+            gap: 2rem;
+            height: calc(100vh - 200px);
+        }
+
+        .editor-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .editor-preview {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .editor-preview-title {
+            color: var(--neon-primary);
+            margin-bottom: 1rem;
+        }
+
+        #preview-content {
+            color: var(--text-light);
+            line-height: 1.6;
+        }
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
