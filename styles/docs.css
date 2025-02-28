@@ -31,9 +31,12 @@
 
 .doc-card:hover,
 .doc-card.active {
+.doc-card:hover,
+.doc-card.active {
     transform: translateY(-3px);
     border-color: var(--neon-primary);
     box-shadow: 0 4px 20px rgba(0, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.08);
     background: rgba(255, 255, 255, 0.08);
 }
 
@@ -41,6 +44,7 @@
     color: var(--neon-primary);
     margin-bottom: 1rem;
     font-size: 1.3rem;
+    text-shadow: 0 0 5px var(--neon-primary);
     text-shadow: 0 0 5px var(--neon-primary);
 }
 
@@ -50,6 +54,7 @@
     margin-bottom: 1rem;
     line-height: 1.6;
     font-size: 0.95rem;
+    font-size: 0.95rem;
 }
 
 #preview-content {
@@ -58,6 +63,12 @@
     padding: 2rem;
     margin-top: 2rem;
     line-height: 1.8;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
     animation: fadeIn 0.3s ease;
 }
 
@@ -75,9 +86,12 @@
     color: var(--neon-primary);
     margin: 1.5rem 0 1rem;
     text-shadow: 0 0 5px var(--neon-primary);
+    text-shadow: 0 0 5px var(--neon-primary);
 }
 
 #preview-content p {
+    margin-bottom: 1.2rem;
+    color: rgba(255, 255, 255, 0.9);
     margin-bottom: 1.2rem;
     color: rgba(255, 255, 255, 0.9);
 }
@@ -88,10 +102,12 @@
     border-radius: 4px;
     font-family: 'Consolas', monospace;
     color: var(--neon-primary);
+    color: var(--neon-primary);
 }
 
 #preview-content pre {
     background: rgba(0, 0, 0, 0.3);
+    padding: 1.2rem;
     padding: 1.2rem;
     border-radius: 8px;
     overflow-x: auto;

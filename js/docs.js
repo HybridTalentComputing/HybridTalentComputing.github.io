@@ -41,6 +41,10 @@ function renderDocsList() {
     const sortedDocs = [...docs].sort((a, b) => a.title.localeCompare(b.title));
 
     docsContainer.innerHTML = sortedDocs.map(doc => `
+    // 按文档标题排序
+    const sortedDocs = [...docs].sort((a, b) => a.title.localeCompare(b.title));
+
+    docsContainer.innerHTML = sortedDocs.map(doc => `
         <div class="doc-card" onclick="showDocument('${doc.id}')">
             <h3>${doc.title}</h3>
             <p class="doc-preview">${doc.content.substring(doc.content.indexOf('\n'), doc.content.indexOf('\n') + 150).trim()}...</p>
