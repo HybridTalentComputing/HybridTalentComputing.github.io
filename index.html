@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hybrid Talent Computing - 个人主页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
     <style>
         :root {
             --neon-primary: #0ff;
@@ -110,6 +111,111 @@
             padding: 1.5rem;
         }
 
+        /* 文档管理系统样式 */
+        .docs-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .docs-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .new-doc-btn {
+            background: linear-gradient(45deg, var(--neon-primary), var(--neon-secondary));
+            border: none;
+            border-radius: 5px;
+            color: var(--text-light);
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .new-doc-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .docs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .doc-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .doc-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--neon-primary);
+        }
+
+        .doc-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--neon-primary);
+        }
+
+        .doc-card p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        /* 编辑器样式 */
+        .editor-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-dark);
+            z-index: 1000;
+            padding: 2rem;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .editor-title {
+            color: var(--neon-primary);
+            font-size: 1.5rem;
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .editor-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 5px;
+            color: var(--text-light);
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .editor-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
         @keyframes glow {
             from {
                 text-shadow: 0 0 10px var(--neon-primary),
@@ -190,6 +296,88 @@
                 </div>
             </div>
         </section>
+
+        <section class="section" id="docs">
+            <div class="container">
+                <div class="docs-section">
+                    <div class="docs-header">
+                        <h2 class="section-title">文档中心</h2>
+                        <button class="new-doc-btn" onclick="openEditor()">创建新文档</button>
+                    </div>
+                    <div class="docs-grid" id="docs-list">
+                        <!-- 文档列表将通过 JavaScript 动态生成 -->
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- 编辑器容器 -->
+    <div class="editor-container" id="editor-container">
+        <div class="editor-header">
+            <input type="text" id="doc-title" placeholder="文档标题" class="editor-title">
+            <div class="editor-actions">
+                <button class="editor-btn" onclick="saveDocument()">保存</button>
+                <button class="editor-btn" onclick="closeEditor()">关闭</button>
+            </div>
+        </div>
+        <textarea id="editor"></textarea>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+    <script>
+        // 初始化编辑器
+        const editor = new EasyMDE({
+            element: document.getElementById('editor'),
+            autofocus: true,
+            spellChecker: false,
+            status: false,
+            placeholder: '在这里开始写作...',
+        });
+
+        // 打开编辑器
+        function openEditor() {
+            document.getElementById('editor-container').style.display = 'block';
+            editor.value('');
+            document.getElementById('doc-title').value = '';
+        }
+
+        // 关闭编辑器
+        function closeEditor() {
+            document.getElementById('editor-container').style.display = 'none';
+        }
+
+        // 保存文档
+        function saveDocument() {
+            const title = document.getElementById('doc-title').value;
+            const content = editor.value();
+            
+            if (!title || !content) {
+                alert('请填写标题和内容');
+                return;
+            }
+
+            // 创建新的文档卡片
+            const docCard = document.createElement('div');
+            docCard.className = 'doc-card';
+            docCard.innerHTML = `
+                <h3>${title}</h3>
+                <p>${new Date().toLocaleDateString()}</p>
+            `;
+
+            // 添加点击事件以编辑文档
+            docCard.onclick = () => {
+                openEditor();
+                document.getElementById('doc-title').value = title;
+                editor.value(content);
+            };
+
+            // 添加到文档列表
+            document.getElementById('docs-list').appendChild(docCard);
+            
+            // 关闭编辑器
+            closeEditor();
+        }
+    </script>
 </body>
 </html>
